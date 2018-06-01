@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Cloud</title>
+	<link href="./images/favicon.gif" type="image/x-icon" rel="shortcut icon">
+	<script src="./js/jquery-1.9.1.js"></script>
+	<script src="./js/jquery.mininoty.min.js"></script>
+	<script src="./js/cookie.js"></script>
+	<script src="./js/param.js"></script>
+	<script src="./js/access_token.js"></script>
+	<script src="./js/files.js"></script>
+	<script src="./js/cloud.js"></script>
+
+	<script src="./fancy-file-uploader/jquery.ui.widget.js"></script>
+	<link rel="stylesheet" href="./fancy-file-uploader/fancy_fileupload.css" type="text/css" media="all" />
+	<script src="./fancy-file-uploader/jquery.fileupload.js"></script>
+	<script src="./fancy-file-uploader/jquery.iframe-transport.js"></script>
+	<script src="./fancy-file-uploader/jquery.fancy-fileupload.js"></script>
+
+	<!--<script src="./js/jquery.hashchange.js"></script>-->
+	<link rel="stylesheet" href="./style/style.css">
+	<link rel="stylesheet" href="./style/cloud.css">
+	<link rel="stylesheet" href="./style/alert.css">
+	<link rel="stylesheet" href="./css/font-awesome.min.css">
+</head>
+<body>
+	<div class="shade"> <!-- Шторка --> </div>
+	<div class="header-box">
+		<div class="mobile-menu-href">
+			<i class="fa fa-bars" title="Меню"></i>
+		</div>	
+		<div class="logo"><img src="./images/cloud.png"></div>
+
+		<div class="search" style="display: none;">
+			<input type="text" id="search-full" placeholder="Поиск по файлам">
+		</div>	
+
+		<div class="file-select">
+			<i class="fa fa-info-circle"></i>
+			<div class="name" id="file-name"></div>
+
+			<div class="buttons">
+				<div class="action" id="file-close">Закрыть</div>
+				<div class="action" id="file-delete">Удалить</div>
+				<div class="action" id="file-share"><i class="fa fa-share-square-o"></i> Поделиться</div>
+				<div class="action" id="file-move"><i class="fa fa-download"></i> Переместить</div>
+				<div class="action" id="file-download"><i class="fa fa-download"></i> Сохранить</div>
+				<div class="play" id="file-play">
+					<div class="action"><i id="audio-new" class="fa fa-play"></i></div>
+				</div>	
+			</div>	
+
+			<!-- Миобальная иконка меню -->
+			<div class="buttons-mobile">
+				<i class="fa fa-get-pocket"></i>
+			</div>
+		</div>
+
+		<div id="user-image">
+			<div class="exit-link">Выход</div>
+			<img class="user" src="./images/time-user.png">
+		</div>	
+	</div>
+
+	<!-- Загрузка файлов -->
+	<div class="loading-box">
+		<div class="title">Загрузка файлов</div>
+		<i id="upload-file-btn" class="fa fa-times close"></i> 
+		<br><br>
+		<input id="thefiles" type="file" name="files" multiple>
+		<!-- https://github.com/cubiclesoft/jquery-fancyfileuploader -->
+		<script type="text/javascript">
+		$(function() {
+			var token;
+			$('#fileloading').FancyFileUpload({
+				params : {
+					action : "fileuploader"
+				},
+				maxfilesize : 100000000,
+				startupload : function(SubmitUpload, e, data) {
+					var formData = new FormData();
+					formData.append("file", data["files"][0]);
+					console.log(data["files"]);
+					$.ajax({
+						url : SERVER + "post/" + data["files"][0]["uploadName"],
+						dataType : 'json',
+						headers: {
+							"Authorization": AUTH_TOKEN
+						},
+						contentType: false,
+						processData: false,
+						data: formData,
+						method: "POST",
+						type: "POST",
+						success : function(tokendata) {
+							token = tokendata;
+
+							//SubmitUpload();
+							console.log(tokendata);
+							//$(".ff_fileupload_fileinfo").html("Файл загружен");
+							fileUpload.find('.ff_fileupload_fileinfo').text('Файл загружен');
+							$(".ff_fileupload_progress_bar").css("width", "100%");
+							files.loading();
+						}
+					});
+				},
+				continueupload : function(e, data) {
+					var ts = Math.round(new Date().getTime() / 1000);
+
+					// Alternatively, just call data.abort() or return false here to terminate the upload but leave the UI elements alone.
+					if (token.expires < ts)  data.ff_info.RemoveFile();
+				},
+				uploadcompleted : function(e, data) {
+					alert(1);
+					data.ff_info.RemoveFile();
+				}
+			});
+		});
+		</script>
+	</div>
+
+	<div class="clear"></div>
+
+	<!-- Меню -->
+	<div class="sidebar-left">
+		<img class="sidebar-logo-mobile" src="./images/cloud.png">
+		<input style="display: none;" class="search-mobile" type="text" placeholder="Поиск по файлам">
+
+		<a style="display: none;" href="./file.html"><button class="btn btn-blue width fs-14 fb"><i class="fa fa-cloud-upload"></i> Загрузить файл</button></a>
+		<button id="folder-create-box" class="btn btn-blue width fs-14 fb"><i class="fa fa-plus"></i> Создать папку</button>
+
+		<input id="fileloading" type="file" name="files" multiple>
+
+		<div class="sidebar-users" style="display: none;">
+			<div class="title">Моя семья</div>
+		</div>
+
+		<div class="free-box" style="display: none;">
+			<div class="line"><div class="green" style="width: 100%;"></div></div>
+			<p>Свободно ∞ из ∞</p>
+		</div>
+	</div>
+
+	<div class="container">
+		<script>
+			$(document).ready(function() {
+				$(window).resize();
+				files.loading();
+			});
+		</script>
+		<audio src="name.ogg" id="audioplayer" controls></audio>
+		<!-- Диалог переноса файла -->
+		<div class="filemove">
+			Откройте нужный каталог и нажмите <a id="filemove" title="Переместить">Переместить</a> 
+			<i class="fa fa-times" id="filemove-cancel" title="Отмена"></i>
+		</div>
+		<!-- Диалог создания папки -->
+		<div class="folder-create">
+			<input id="folder-create-input" type="text" class="input" placeholder="Новая папка">
+			<button id="folder-create-cancel" class="btn fs-13">Отмена</button>
+			<button id="folder-create" class="btn btn-blue fs-13">Создать</button>
+		</div>
+		<!-- Диалог "Поделиться" -->
+		<div class="file-share">
+			<input id="file-share-input" type="text" class="fs-12 fl-l" readonly="" placeholder="Ссылка" value="">
+			<div id="file-share-input-tmp" class="fs-12 fl-l"></div>
+			<button id="file-share-copy" class="btn btn-blue fs-12 fl-r">Скопировать</button>
+			<button id="file-share-gen-link" class="btn fs-12 fl-r">Поделиться файлом</button>
+			<div class="clear"></div>
+			<button id="file-share-delete-link" class="btn btn-red fs-12">Удалить ссылку</button>
+
+			<div class="file-share-users">
+
+			</div>
+		</div>
+		<!-- Диалог "Перемеиновать" -->
+		<div class="file-rename">
+			<input type="text" class="fs-12 input" placeholder="Какой-то файл" value="">
+			<button id="file-rename-cancel" class="btn fs-12 fl-r">Отмена</button>
+			<button id="file-rename" class="btn btn-blue fs-12 fl-r">Сохранить</button>
+		</div>
+		<div class="now-dir">
+			<!-- Адрес текущей директории -->
+		</div>
+		<div id="title-dir" class="title">Cloud</div>
+		<div class="loader">
+			<!-- Анимация загрузки -->
+		</div>
+		<div class="folders">
+			<!-- Папки и файлы -->
+		</div>	
+	</div>
+</body>
+</html>

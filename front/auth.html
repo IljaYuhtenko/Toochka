@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Cloud - Авторизация</title>
+	<link href="./images/favicon.gif" type="image/x-icon" rel="shortcut icon">
+	<link rel="stylesheet" href="./style/style.css">
+	<link rel="stylesheet" href="./style/auth.css">
+	<link rel="stylesheet" href="./style/alert.css">
+	<script src="./js/jquery-1.9.1.js"></script>
+	<script src="./js/jquery.mininoty.min.js"></script>
+	<script src="./js/param.js"></script>
+	<script src="./js/cookie.js"></script>
+	<script src="./js/access_token.js"></script>
+	<script src="./js/auth.js"></script>
+</head>
+<body>
+	<div class="shade"></div>
+	<div class="signup-box">
+		<input class="input" type="email" id="signup-email" maxlength="255" autofocus="" placeholder="E-Mail">
+		<input class="input" type="password" id="signup-password" placeholder="Пароль">
+		<input class="input" type="password" id="signup-password-repeat" placeholder="Повторите пароль">
+
+		<button id="signup-btn" class="btn btn-blue width fs-13">Зарегистрироваться</button>
+	</div>
+	<div class="login-box">
+		<div class="mobile-size">
+			<img src="./images/wp.jpg">
+
+			<div class="logo-text">Cloud</div>
+
+			<input type="email" id="email" maxlength="255" autofocus="" value="alexpago@yandex.ru" placeholder="E-Mail">
+			<input type="password" id="password" value="0990" placeholder="Пароль">
+			
+			<button id="login-btn" class="btn btn-blue width fs-13">Войти</button>
+			<div class="social-icons" style="display: none;">
+				Войти через: <a href="#">ВКонтакте</a>
+			</div>
+
+			<div class="clear"></div>
+
+			<div class="signup-link">
+				<a class="">Регистрация</a>
+			</div>	
+		</div>	
+	</div>
+</body>
+</html>

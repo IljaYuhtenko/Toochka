@@ -1,0 +1,23 @@
+{
+  "name": "jquery.mininoty",
+  "description": "Super simple / small notifier to use, it's easier just alert ().",
+  "main": "jquery.mininoty.js",
+  "authors": [
+    "Stepan Maslennikov"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "jquery",
+    "notifier",
+    "noty",
+    "mini"
+  ],
+  "homepage": "https://github.com/StepanMas/jQuery.miniNoty",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

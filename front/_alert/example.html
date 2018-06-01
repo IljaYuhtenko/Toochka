@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="jquery.mininoty.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+
+    <script type="text/javascript">
+        window.onload = function ()
+        {
+            $('.one').click(
+                    function ()
+                    {
+                        $.miniNoty(
+                                'Text messange is ' + $(this).attr('title') + '<br>Working is perfect!',
+                                $(this).attr('title')
+                        )
+                        return false;
+                    }
+            )
+
+            $('.getText').click(
+                    function ()
+                    {
+                        if ($(this).hasClass('little'))
+                        {
+                            $.miniNoty($('.little-text').html())
+                        }
+
+                        else
+                        {
+                            $.miniNoty($('textarea').val())
+                        }
+                        return false;
+                    }
+            )
+        }
+    </script>
+</head>
+<body>
+
+Two arguments: <br/>
+<a class="one" title="success" href="">Success</a>
+<a class="one" title="normal" href="">Normal</a>
+<a class="one" title="error" href="">Error</a>
+<a class="one" title="warning" href="">Warning</a>
+
+<br/><br/>
+One argument, array<br/>
+<a class="success getText little" title="" href="">lot text</a>
+<a class="normal getText" title="" href="">get text of textarea</a>
+
+<br/><br/>
+<div class="little-text">
+    VERY LOT TEXT Aliquam urna eros, cursus non magna maximus, tempus hendrerit arcu. Fusce a nulla semper, porta velit
+    non, elementum
+    turpis. Proin purus sem, lobortis eget eros et, commodo venenatis dui. Donec ultrices tempus felis eget feugiat.
+    Etiam nec aliquam urna. Nam molestie purus vitae sapien sodales, non molestie dui interdum. Curabitur id posuere
+    turpis. Mauris facilisis pharetra congue. Cras nec interdum est. Aenean sed nibh augue.
+</div>
+<br/>
+<textarea style="width:100%; height:200px" name="text">
+	Text for custom message
+</textarea>
+
+<hr/>
+
+<fieldset>
+    <a class="custom-option" title="" href="#">message and go to</a>
+	<pre>
+		$.miniNoty({
+			'class'       : 'miniNoty',
+			timeoutToHide : 3000,  // timeout to hide
+			timeoutAnimEnd: 500, // timeout animate in SCSS
+			view          : 'normal',
+			autoHide      : true,
+			message       : 'Click me to go other website!',
+			buttons       : [
+				{
+					name: 'Go',
+					link: 'http://google.com',
+					target: '_blank'
+				}
+			],
+			allowButtonClose: false,
+
+			redirect: 'http://ya.ru',
+			blank         : true
+		})
+	</pre>
+    <script type="text/javascript">
+        $(
+                function ()
+                {
+                    $('.custom-option').click(
+                            function ()
+                            {
+
+                                $.miniNoty(
+                                        {
+                                            'class'         : 'miniNoty',
+                                            timeoutToHide   : 3000,  // timeout to hide
+                                            timeoutAnimEnd  : 500, // timeout animate in SCSS
+                                            view            : 'normal',
+                                            autoHide        : true,
+                                            message         : 'Click me to go other website!',
+                                            buttons         : [
+                                                {
+                                                    name  : 'Go',
+                                                    link  : 'http://google.com',
+                                                    target: '_blank'
+                                                }
+                                            ],
+                                            allowButtonClose: false,
+
+                                            redirect: 'http://ya.ru',
+                                            blank   : true
+                                        }
+                                )
+
+                                return false;
+                            }
+                    )
+                }
+        )
+    </script>
+</fieldset>
+
+<br/>
+<fieldset>
+    <a class="custom-option-1" title="" href="#">warning - Button:Go 1</a>
+<pre>
+	$.miniNoty({
+		view: 'warning',
+		message: 'Go or close me',
+		buttons: [
+			{
+				name: 'Go 1',
+				link: 'http://ya.ru',
+				target: ''
+			}
+		],
+		allowButtonClose: true
+	})
+</pre>
+    <script type="text/javascript">
+        $(
+                function ()
+                {
+                    $('.custom-option-1').click(
+                            function ()
+                            {
+
+                                $.miniNoty(
+                                        {
+                                            view            : 'warning',
+                                            message         : 'Go or close me',
+                                            buttons         : [
+                                                {
+                                                    name  : 'Go',
+                                                    link  : 'http://ya.ru',
+                                                    target: ''
+                                                }
+                                            ],
+                                            allowButtonClose: true
+                                        }
+                                )
+
+                                return false;
+                            }
+                    )
+                }
+        )
+    </script>
+</fieldset>
+
+<br/>
+<fieldset>
+    <a class="custom-option-2" title="" href="#">Message have event redirect by click</a>
+	<pre>
+		$(function () {
+			$('.custom-option-2').click(function () {
+
+				$.miniNoty({
+					message: 'Click me for redirect',
+					redirect: 'http://ya.ru'
+				})
+
+				return false;
+			})
+		})
+	</pre>
+    <script type="text/javascript">
+        $(
+                function ()
+                {
+                    $('.custom-option-2').click(
+                            function ()
+                            {
+
+                                $.miniNoty(
+                                        {
+                                            message : 'Click me for redirect',
+                                            redirect: 'http://ya.ru'
+                                        }
+                                )
+
+                                return false;
+                            }
+                    )
+                }
+        )
+    </script>
+</fieldset>
+
+<br/>
+<fieldset>
+    <a class="setParam" href="#">Set new params timeoutToHide = 10 sec.</a>
+    <a class="getParam" href="#">Get new params</a>
+	<pre>
+		$(function(){
+			$('.setParam').click(function(){
+				$.miniNotyConfig.set({
+					timeoutToHide: 10000
+				})
+				return false;
+			})
+
+			$('.getParam').click(function(){
+				console.log($.miniNotyConfig.get());
+				return false;
+			})
+		})
+	</pre>
+    <script type="text/javascript">
+        $(
+                function ()
+                {
+                    $('.setParam').click(
+                            function ()
+                            {
+                                $.miniNotyConfig.set(
+                                        {
+                                            timeoutToHide: 10000
+                                        }
+                                )
+                                return false;
+                            }
+                    )
+
+                    $('.getParam').click(
+                            function ()
+                            {
+                                console.log($.miniNotyConfig.get());
+                                return false;
+                            }
+                    )
+                }
+        )
+    </script>
+</fieldset>
+
+</body>
+</html>
